@@ -124,9 +124,6 @@ daily_data = [
     {'Mes': 'Septiembre', 'Call Date': '2025-09-30', 'HANDLED': 40, 'OIR (%)': 92.0, 'AHT (seg)': 475.0, 'PS & Compliance (%)': 74.0, 'RTA (%)': 84.0, 'Availability (%)': 4.0}
 ]
 
-df_daily = pd.DataFrame(daily_data)
-
-# Datos mensuales
 
 data_monthly = {
     'Mes': ['Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'],
@@ -137,10 +134,8 @@ data_monthly = {
     'PS & Compliance (%)': [79.0, 74.14, 87.57, 91.3, 74.1, 75.0],
     'RTA (%)': [89.9, 99.81, 99.87, 98.3, 99.1, 95.0]
 }
-
 df_monthly = pd.DataFrame(data_monthly)
 
-# Datos equipo - removed 'CS (%)'
 data_equipo = {
     'Empleado': [
         'Christian Velasco Navarro', 'Teresa Cervantes', 'Carlos Miguel', 'Torre Roberto', 'De La Cruz Paola',
@@ -159,258 +154,241 @@ data_equipo = {
     'PS & Compliance (%)': [86.16, 88.4, 93.28, 84.55, 83.27, 90.16, 86.33, 44.95, 98.57, 91.67, 100.0, 82.79, 85.7, 82.67],
     'AHT': [633, 655.7, 637.8, 922.8, 606.3, 890, 772.5, 609.9, 506.6, 486, 450, 440, 384, 381]
 }
-
-df_daily = pd.DataFrame(daily_data)
-
-# Datos mensuales
-
-data_monthly = {
-    'Mes': ['Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'],
-    'HANDLED': [320, 310, 300, 290, 280, 270],
-    'OIR (%)': [94.67, 96.15, 86.67, 96.15, 96.75, 92.0],
-    'AHT (seg)': [567.1, 459.0, 459.0, 498.9, 629.0, 650.0],
-    'QA (%)': [81.0, 80.0, 83.0, 73.0, 81.1, 87.5],
-    'PS & Compliance (%)': [79.0, 74.14, 87.57, 91.3, 74.1, 75.0],
-    'RTA (%)': [89.9, 99.81, 99.87, 98.3, 99.1, 95.0]
-}
-
-df_monthly = pd.DataFrame(data_monthly)
-
-# Datos equipo - removed 'CS (%)'
-data_equipo = {
-    'Empleado': [
-        'Christian Velasco Navarro', 'Teresa Cervantes', 'Carlos Miguel', 'Torre Roberto', 'De La Cruz Paola',
-        'Ramiro Partida', 'Villela Stefania', 'Izaguirre Itzel', 'Silva Bernal', 'Delgado Rafael',
-        'Velasco Estrada', 'Gabriel Araceli', 'Soriano Madriz', 'Alvarez Danila'
-    ],
-    'OIR (%)': [95.12, 94.76, 93.53, 93.90, 93.65, 92.49, 98.31, 81.98, 70.0, 100.0, 100.0, 93.85, 92.81, 83.33],
-    'Silence Percentage (%)': [38.4, 47.6, 42.6, 45.5, 38.98, 34.0, 41.7, 38.47, 45.0, 45.02, 48.0, 49.0, 46.32, 51.18],
-    'CCA (%)': [75.2, 98.0, 100.0, 100.0, 80.77, 85.33, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
-    'CARE (%)': [7.36, 0.0, 8.58, 10.0, 6.36, 7.32, 10.0, 5.77, 4.67, 1.0, 0.0, 3.87, 0.7, 0.0],
-    'NICE TOUR (%)': [70.5, 75.0, 84.33, 71.38, 82.14, 63.30, 50.0, 85.0, 95.83, 75.0, 73.44, 95.10, 90.0, 90.0],
-    'QA (%)': [85.0, 90.0, 90.5, 70.52, 52.0, 67.0, 100.0, 87.22, 100.0, 100.0, 100.0, 92.5, 95.0, 70.0],
-    'ACS Score (%)': [89.0, 90.0, 94.4, 97.3, 70.5, 100.0, 100.0, 84.8, 0.0, 100.0, 90.7, 92.3, 85.33, 83.33],
-    'Availability (%)': [96.51, 99.49, 99.79, 99.28, 95.96, 99.96, 98.31, 98.79, 99.74, 95.29, 99.83, 99.78, 83.35, 93.0],
-    'RTA (%)': [82.94, 93.3, 88.42, 84.33, 83.06, 65.96, 82.31, 70.72, 80.96, 100.0, 73.1, 70.0, 75.0, 66.0],
-    'PS & Compliance (%)': [86.16, 88.4, 93.28, 84.55, 83.27, 90.16, 86.33, 44.95, 98.57, 91.67, 100.0, 82.79, 85.7, 82.67],
-    'AHT': [633, 655.7, 637.8, 922.8, 606.3, 890, 772.5, 609.9, 506.6, 486, 450, 440, 384, 381]
-}
-
 df_equipo = pd.DataFrame(data_equipo)
 
-
-# --------------------------- METAS y formatos ---------------------------
+# --------------------------- METAS (según tus valores pedidos) ---------------------------
 metas = {
-    'OIR (%)': 92.0,
-    'AHT (seg)': 640.0,
+    'OIR (%)': 90.0,
+    'AHT (seg)': 630.0,
     'QA (%)': 85.0,
     'ACS (%)': 70.0,
-    'PS & Compliance (%)': 75.0,
-    'RTA (%)': 90.0,
+    'PS & Compliance (%)': 80.0,
+    'RTA (%)': 85.0,
     'CCA (%)': 90.0,
     'CARE (%)': 5.0,
     'NICE TOUR (%)': 80.0,
     'ACS Score (%)': 85.0,
-    'Lates (%)': 0.0,
-    'Abs (%)': 50.0,
-    'Availability (%)': 90.0,  # Assumed target, high good
-    'Silence Percentage (%)': 40.0  # Assumed target, low good
+    'Silence Percentage (%)': 40.0
 }
-
 # ----------------------------------------------------------------------
-# Función auxiliar para obtener letra de columna Excel desde índice 0-based
+
 def excel_col_letter(col_idx):
     return xl_col_to_name(col_idx)
 
-# Guardar en Excel con xlsxwriter
-output_file = r'C:\Users\GAMER\Documents\Reporte_Metricas_Christian.xlsx'
+# Ruta de salida 
+output_file = r'Reporte_Metricas_Christian_modified.xlsx'
+
 try:
     with pd.ExcelWriter(output_file, engine='xlsxwriter') as writer:
         workbook = writer.book
 
-        # Formatos generales with larger font
-        fmt_header = workbook.add_format({'bold': True, 'bg_color': '#4F81BD', 'font_color': 'white', 'align': 'center', 'font_size': 14})
-        fmt_bold = workbook.add_format({'bold': True, 'font_size': 12})
-        fmt_pct = workbook.add_format({'num_format': '0.00', 'font_size': 12})
-        fmt_int = workbook.add_format({'num_format': '0', 'font_size': 12})
+        # Formatos
+        fmt_header = workbook.add_format({'bold': True, 'bg_color': '#4F81BD', 'font_color': 'white', 'align': 'center', 'font_size': 12})
+        fmt_bold = workbook.add_format({'bold': True, 'font_size': 11})
+        fmt_int = workbook.add_format({'num_format': '0', 'font_size': 11})
+        fmt_round0 = workbook.add_format({'num_format': '0', 'font_size': 11})
 
-        # ------------------ Formato condicional (semáforo) ------------------
-        # Define formats with larger font
-        fmt_dark_green = workbook.add_format({'bg_color': '#008000', 'font_size': 12})
-        fmt_light_green = workbook.add_format({'bg_color': '#90EE90', 'font_size': 12})
-        fmt_yellow = workbook.add_format({'bg_color': '#FFFF00', 'font_size': 12})
-        fmt_red = workbook.add_format({'bg_color': '#FF0000', 'font_size': 12})
+        fmt_dark_green = workbook.add_format({'bg_color': '#008000', 'font_size': 11})
+        fmt_light_green = workbook.add_format({'bg_color': '#90EE90', 'font_size': 11})
+        fmt_yellow = workbook.add_format({'bg_color': '#FFFF00', 'font_size': 11})
+        fmt_red = workbook.add_format({'bg_color': '#FF0000', 'font_size': 11})
 
         def add_traffic_light(ws, col_idx, target, menor_mejor=False, first_row=1, last_row=None):
             if last_row is None:
                 last_row = ws.dim_rowmax
             col_letter = excel_col_letter(col_idx)
             rng = f'{col_letter}{first_row+1}:{col_letter}{last_row+1}'
-            # For xlsxwriter conditional formats, we add 4 rules to implement the bands described
             if menor_mejor:
-                # dark green <= target
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'<=', 'value': target, 'format': fmt_dark_green})
-                # light green <= target*1.05 (close)
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'<=', 'value': target*1.05, 'format': fmt_light_green})
-                # yellow <= target*1.15
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'<=', 'value': target*1.15, 'format': fmt_yellow})
-                # else red (>= target*1.15) - implemented by >= rule
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'>', 'value': target*1.15, 'format': fmt_red})
             else:
-                # dark green >= target
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'>=', 'value': target, 'format': fmt_dark_green})
-                # light green >= 0.95*target
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'>=', 'value': target*0.95, 'format': fmt_light_green})
-                # yellow >= 0.9*target
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'>=', 'value': target*0.9, 'format': fmt_yellow})
-                # else red < 0.9*target
                 ws.conditional_format(rng, {'type':'cell', 'criteria':'<', 'value': target*0.9, 'format': fmt_red})
 
-        # 1) Hoja: Datos Diarios (como tablas separadas por mes)
+        # ------------------ HOJA: Daily_Data (tablas por mes, sin Availability) ------------------
         sheet_daily = 'Daily_Data'
         ws = workbook.add_worksheet(sheet_daily)
         writer.sheets[sheet_daily] = ws
+
+        df_daily = pd.DataFrame(daily_data)
+
         grouped = df_daily.groupby('Mes')
         current_row = 0
-        styles = ['Table Style Medium 9', 'Table Style Medium 2', 'Table Style Medium 3', 'Table Style Medium 4', 'Table Style Medium 5', 'Table Style Medium 6', 'Table Style Medium 7']
+        styles = ['Table Style Medium 9', 'Table Style Medium 2', 'Table Style Medium 3', 'Table Style Medium 4']
         i = 0
         for mes, df_group in grouped:
-            # Write month header
+            # Drop Availability column for Daily as pediste
+            df_group2 = df_group.drop(columns=['Availability (%)'], errors='ignore').copy()
+
+            # Mes header
             ws.write(current_row, 0, f'Mes: {mes}', fmt_header)
             current_row += 1
-            # Write data
-            df_group.to_excel(writer, sheet_name=sheet_daily, index=False, startrow=current_row, header=True)
-            rows_group = len(df_group)
-            cols = len(df_group.columns)
+
+            # Write data (headers + rows)
+            df_group2.to_excel(writer, sheet_name=sheet_daily, index=False, startrow=current_row, header=True)
+
+            rows_group = len(df_group2)
+            cols = len(df_group2.columns)
             last_col = cols - 1
+
+            # Add as Excel table
             table_range = f'A{current_row+1}:{excel_col_letter(last_col)}{current_row + rows_group +1}'
-            columns = [{'header': c} for c in df_group.columns]
+            columns = [{'header': c} for c in df_group2.columns]
             ws.add_table(table_range, {'columns': columns, 'style': styles[i % len(styles)]})
-            # Add averages row
+
+            # Add Average row (rounded, sin decimales)
             avg_row = current_row + rows_group + 2
             ws.write(avg_row-1, 0, 'Average', fmt_bold)
-            for cidx, col in enumerate(df_group.columns):
-                if pd.api.types.is_numeric_dtype(df_group[col]):
+            for cidx, col in enumerate(df_group2.columns):
+                if pd.api.types.is_numeric_dtype(df_group2[col]):
                     col_letter = excel_col_letter(cidx)
                     start = current_row + 2
                     end = current_row + rows_group +1
-                    formula = f'=AVERAGE({col_letter}{start}:{col_letter}{end})'
+                    formula = f'=ROUND(AVERAGE({col_letter}{start}:{col_letter}{end}),0)'
                     ws.write_formula(avg_row-1, cidx, formula)
-            # Ajustar anchos (larger for visibility)
-            for j, col in enumerate(df_group.columns):
-                max_len = max(df_group[col].astype(str).map(len).max(), len(col)) + 5
+
+            # Ajustar anchos
+            for j, col in enumerate(df_group2.columns):
+                max_len = max(df_group2[col].astype(str).map(len).max(), len(col)) + 4
                 ws.set_column(j, j, max_len)
-            # Apply semáforo to this group
-            daily_col_map_group = {c: j for j, c in enumerate(df_group.columns)}
-            for metric in ['OIR (%)', 'AHT (seg)', 'PS & Compliance (%)', 'RTA (%)', 'Availability (%)']:
+
+            # Semáforo por métricas relevantes
+            daily_col_map_group = {c: j for j, c in enumerate(df_group2.columns)}
+            for metric in ['OIR (%)', 'AHT (seg)', 'PS & Compliance (%)', 'RTA (%)']:
                 if metric in metas and metric in daily_col_map_group:
                     menor = True if metric in ['AHT (seg)'] else False
                     add_traffic_light(ws, daily_col_map_group[metric], metas[metric], menor_mejor=menor, first_row=current_row, last_row=current_row + rows_group)
-            current_row = avg_row + 2  # space between months
+
+            # --- Añadir mini-gráfica OIR vs AHT para este mes ---
+            # localizar índices de columnas
+            if ('OIR (%)' in df_group2.columns) and ('AHT (seg)' in df_group2.columns) and ('Call Date' in df_group2.columns):
+                idx_date = df_group2.columns.get_loc('Call Date')
+                idx_oir = df_group2.columns.get_loc('OIR (%)')
+                idx_aht = df_group2.columns.get_loc('AHT (seg)')
+                chart = workbook.add_chart({'type': 'line'})
+                # OIR series
+                chart.add_series({
+                    'name': 'OIR (%)',
+                    'categories': [sheet_daily, current_row+1, idx_date, current_row+rows_group, idx_date],
+                    'values':     [sheet_daily, current_row+1, idx_oir, current_row+rows_group, idx_oir],
+                })
+                # AHT series (segunda eje)
+                chart.add_series({
+                    'name': 'AHT (seg)',
+                    'categories': [sheet_daily, current_row+1, idx_date, current_row+rows_group, idx_date],
+                    'values':     [sheet_daily, current_row+1, idx_aht, current_row+rows_group, idx_aht],
+                    'y2_axis': True
+                })
+                chart.set_title({'name': f'{mes}: OIR vs AHT'})
+                chart.set_size({'width': 360, 'height': 200})
+                # Insertar chart a la derecha de la tabla
+                insert_col = last_col + 2
+                insert_cell = f'{excel_col_letter(insert_col)}{current_row+1}'
+                ws.insert_chart(insert_cell, chart)
+
+            # Espacio antes del siguiente mes
+            current_row = avg_row + 2
             i += 1
 
-        # 2) Hoja: Monthly Summary
-        
+        # ------------------ HOJA: Monthly_Summary ------------------
         sheet_month = 'Monthly_Summary'
         df_monthly.to_excel(writer, sheet_name=sheet_month, index=False, startrow=0)
         ws_m = writer.sheets[sheet_month]
         r_m, c_m = df_monthly.shape
         last_col_m = c_m - 1
+
         # Add table
         table_range_m = f'A1:{excel_col_letter(last_col_m)}{r_m+1}'
         columns_m = [{'header': c} for c in df_monthly.columns]
         ws_m.add_table(table_range_m, {'columns': columns_m, 'style':'Table Style Medium 9'})
-        # Average row
+
+        # Average row (rounded)
         avg_row_m = r_m + 2
         ws_m.write(avg_row_m-1, 0, 'Average 6 Months', fmt_bold)
         for cidx, col in enumerate(df_monthly.columns):
             if pd.api.types.is_numeric_dtype(df_monthly[col]):
                 col_letter = excel_col_letter(cidx)
-                formula = f'=AVERAGE({col_letter}2:{col_letter}{r_m+1})'
+                formula = f'=ROUND(AVERAGE({col_letter}2:{col_letter}{r_m+1}),0)'
                 ws_m.write_formula(avg_row_m-1, cidx, formula)
-        for i, col in enumerate(df_monthly.columns):
-            max_len = max(df_monthly[col].astype(str).map(len).max(), len(col)) + 5
-            ws_m.set_column(i, i, max_len)
 
+        # Ajuste anchos
+        for i_col, col in enumerate(df_monthly.columns):
+            max_len = max(df_monthly[col].astype(str).map(len).max(), len(col)) + 4
+            ws_m.set_column(i_col, i_col, max_len)
 
-        # 3) Hoja: Team (Equipo)
-        
-        sheet_team = 'Team_August'
-        df_equipo.to_excel(writer, sheet_name=sheet_team, index=False, startrow=0)
-        ws_t = writer.sheets[sheet_team]
-        r_t, c_t = df_equipo.shape
-        last_col_t = c_t -1
-        table_range_t = f'A1:{excel_col_letter(last_col_t)}{r_t+1}'
-        columns_t = [{'header': c} for c in df_equipo.columns]
-        ws_t.add_table(table_range_t, {'columns': columns_t, 'style':'Table Style Medium 9'})
-        # Average row
-        avg_row_t = r_t + 2
-        ws_t.write(avg_row_t-1, 0, 'Average', fmt_bold)
-        for cidx, col in enumerate(df_equipo.columns):
-            if pd.api.types.is_numeric_dtype(df_equipo[col]):
-                col_letter = excel_col_letter(cidx)
-                formula = f'=AVERAGE({col_letter}2:{col_letter}{r_t+1})'
-                ws_t.write_formula(avg_row_t-1, cidx, formula)
-        for i, col in enumerate(df_equipo.columns):
-            max_len = max(df_equipo[col].astype(str).map(len).max(), len(col)) + 5
-            ws_t.set_column(i, i, max_len)
-
-
-        # Apply semáforo en Monthly (columns indices: OIR=1, AHT=2, QA=3, ACS=4, PS=5, RTA=6)
-        col_map_monthly = { 'OIR (%)': 1, 'AHT (seg)': 2, 'QA (%)': 3, 'ACS (%)': 4, 'PS & Compliance (%)': 5, 'RTA (%)': 6 }
+        # Semáforo incluyendo RTA
+        col_map_monthly = { 'OIR (%)': 1, 'AHT (seg)': 2, 'QA (%)': 3, 'PS & Compliance (%)': 5, 'RTA (%)': 6 }
         for k, idx in col_map_monthly.items():
             if k in metas:
                 menor = True if k in ['AHT (seg)'] else False
                 add_traffic_light(ws_m, idx, metas[k], menor_mejor=menor, first_row=1, last_row=r_m)
 
-
-        # Apply semáforo en Team (selección de métricas, adjusted for removed CS)
-        team_col_map = {
-            'OIR (%)': 1, 'Silence Percentage (%)': 2, 'CCA (%)': 3, 'CARE (%)': 4,
-            'NICE TOUR (%)': 5, 'QA (%)': 6, 'ACS Score (%)': 7,
-            'Availability (%)': 8, 'RTA (%)': 9, 'PS & Compliance (%)': 10, 'AHT': 11
-        }
-        for k, idx in team_col_map.items():
-            if k in metas:
-                menor = True if k in ['AHT', 'Silence Percentage (%)', 'CARE (%)'] else False
-                add_traffic_light(ws_t, idx, metas[k], menor_mejor=menor, first_row=1, last_row=r_t)
-
-
-        # Daily semáforo applied per group above
-
-
-        # ------------------ Gráficos con XlsxWriter ------------------
-        # Monthly trend: OIR (line), QA (line) and AHT (line secondary axis)
-        chart_month = workbook.add_chart({'type': 'line'})  
-        # series: data is in sheet_month starting at row 1 (headers row 0)
-        # OIR column col 1
+        # Gráfico mensual (OIR / QA / AHT)
+        chart_month = workbook.add_chart({'type': 'line'})
         chart_month.add_series({'name': 'OIR (%)', 'categories': [sheet_month, 1, 0, r_m, 0], 'values': [sheet_month, 1, 1, r_m, 1]})
         chart_month.add_series({'name': 'QA (%)', 'categories': [sheet_month, 1, 0, r_m, 0], 'values': [sheet_month, 1, 3, r_m, 3]})
         chart_month.add_series({'name': 'AHT (seg)', 'categories': [sheet_month, 1, 0, r_m, 0], 'values': [sheet_month, 1, 2, r_m, 2], 'y2_axis': True})
         chart_month.set_title({'name': 'Trend Monthly: OIR / QA / AHT'})
-        chart_month.set_y_axis({'name': 'Percent (%)'})
-        chart_month.set_y2_axis({'name': 'AHT (seg)'})
         chart_month.set_size({'width': 720, 'height': 360})
         ws_m.insert_chart('J2', chart_month)
 
-        # Team ranking - OIR horizontal bar
-        chart_team = workbook.add_chart({'type':'bar', 'subtype':'stacked'})
-        # Categories: Empleado rows 1..r_t
-        chart_team.add_series({'name':'OIR (%)', 'categories': [sheet_team, 1, 0, r_t, 0], 'values': [sheet_team, 1, 1, r_t, 1]})
-        chart_team.set_title({'name': 'Team Ranking by OIR (%)'})
-        chart_team.set_x_axis({'name': 'OIR (%)'})
-        chart_team.set_size({'width': 720, 'height': 400})
-        ws_t.insert_chart('P2', chart_team)
+        # ------------------ HOJA: Team_August (sin Availability, AHT, Silence) ------------------
+        sheet_team = 'Team_August'
+        # Drop columns que pediste eliminar
+        df_team2 = df_equipo.drop(columns=['Availability (%)', 'AHT', 'Silence Percentage (%)'], errors='ignore').copy()
+        df_team2.to_excel(writer, sheet_name=sheet_team, index=False, startrow=0)
+        ws_t = writer.sheets[sheet_team]
+        r_t, c_t = df_team2.shape
+        last_col_t = c_t - 1
 
-        # Daily chart removed as data is split
+        table_range_t = f'A1:{excel_col_letter(last_col_t)}{r_t+1}'
+        columns_t = [{'header': c} for c in df_team2.columns]
+        ws_t.add_table(table_range_t, {'columns': columns_t, 'style':'Table Style Medium 9'})
+
+        # Average row (rounded)
+        avg_row_t = r_t + 2
+        ws_t.write(avg_row_t-1, 0, 'Average', fmt_bold)
+        for cidx, col in enumerate(df_team2.columns):
+            if pd.api.types.is_numeric_dtype(df_team2[col]):
+                col_letter = excel_col_letter(cidx)
+                formula = f'=ROUND(AVERAGE({col_letter}2:{col_letter}{r_t+1}),0)'
+                ws_t.write_formula(avg_row_t-1, cidx, formula)
+
+        # Ajuste anchos
+        for i_col, col in enumerate(df_team2.columns):
+            max_len = max(df_team2[col].astype(str).map(len).max(), len(col)) + 4
+            ws_t.set_column(i_col, i_col, max_len)
+
+        # Semáforo en Team para métricas restantes
+        for cidx, col in enumerate(df_team2.columns):
+            if col in metas:
+                menor = True if col in ['CARE (%)'] else False
+                add_traffic_light(ws_t, cidx, metas[col], menor_mejor=menor, first_row=1, last_row=r_t)
+
+        # Gráfico de ranking de OIR
+        if 'OIR (%)' in df_team2.columns:
+            chart_team = workbook.add_chart({'type':'bar'})
+            chart_team.add_series({
+                'name': 'OIR (%)',
+                'categories': [sheet_team, 1, 0, r_t, 0],
+                'values':     [sheet_team, 1, df_team2.columns.get_loc('OIR (%)'), r_t, df_team2.columns.get_loc('OIR (%)')]
+            })
+            chart_team.set_title({'name': 'Team Ranking by OIR (%)'})
+            chart_team.set_x_axis({'name': 'OIR (%)'})
+            chart_team.set_size({'width': 720, 'height': 400})
+            ws_t.insert_chart('P2', chart_team)
 
     print(f'Archivo Excel generado: {output_file}')
+
 except PermissionError as e:
     print(f"Error: No se puede escribir en el archivo '{output_file}' debido a un problema de permisos.")
-    print("Por favor, asegúrate de que:")
-    print("1. El archivo no esté abierto en otra aplicación (como Excel).")
-    print("2. Tienes permisos de escritura en la carpeta 'C:\\Users\\GAMER\\Documents'.")
-    print("3. Intenta ejecutar el comando como administrador o cambiar la ruta de salida.")
+    print("1) Cierra el archivo en Excel si está abierto.")
+    print("2) Asegúrate de tener permisos de escritura en la carpeta.")
+    print("3) O cambia la ruta de output_file a otra carpeta.")
     print(f"Detalles del error: {e}")
 except Exception as e:
     print(f"Se produjo un error inesperado: {e}")
