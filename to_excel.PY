@@ -1,3 +1,30 @@
+#!/usr/bin/env python3
+"""
+Sistema de Reportes de Métricas - Panera Bread
+==============================================
+
+Este script genera reportes automatizados de Excel con métricas de rendimiento (KPIs)
+para el equipo de atención al cliente. Incluye tablas dinámicas, formatos condicionales 
+tipo semáforo, gráficos de tendencias y análisis por empleado.
+
+Autor: Christian Velasco Navarro
+Empresa: Culichi Metrics - Panera Bread
+Fecha: 2025
+"""
+
+# =============================================================================
+# IMPORTACIONES DE LIBRERÍAS NECESARIAS
+# =============================================================================
+
+import pandas as pd
+from datetime import datetime
+from xlsxwriter.utility import xl_col_to_name
+
+# =============================================================================
+# 1. CONFIGURACIÓN INICIAL Y CONSTANTES
+# =============================================================================
+
+# Datos diarios de métricas por fecha y mes
 daily_data = [
     # Abril
     {'Mes': 'Abril', 'Call Date': '2025-04-01', 'HANDLED': 35, 'OIR (%)': 100.0, 'AHT (seg)': 560.2, 'PS & Compliance (%)': 100.0, 'RTA (%)': 90.0, 'Availability (%)': 99.6},
@@ -104,10 +131,10 @@ daily_data = [
     {'Mes': 'Agosto', 'Call Date': '2025-08-01', 'HANDLED': 34, 'OIR (%)': 100.0, 'AHT (seg)': 610.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 89.0, 'Availability (%)': 99.8},
     {'Mes': 'Agosto', 'Call Date': '2025-08-02', 'HANDLED': 32, 'OIR (%)': 98.0, 'AHT (seg)': 590.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 87.0, 'Availability (%)': 99.7},
     {'Mes': 'Agosto', 'Call Date': '2025-08-03', 'HANDLED': 36, 'OIR (%)': 100.0, 'AHT (seg)': 620.0, 'PS & Compliance (%)': 75.0, 'RTA (%)': 85.0, 'Availability (%)': 99.6},
-    {'Mes': 'Agosto', 'Call Date': '2025-08-04', 'HANDLED': 30, 'OIR (%)': 96.0, 'AHT (seg)': 580.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 91.0, 'Availability (%)':99.6},
-    {'Mes': 'Agosto', 'Call Date': '2025-08-05', 'HANDLED': 38, 'OIR (%)': 100.0, 'AHT (seg)': 630.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 93.0,'Availability (%)': 99.7},
+    {'Mes': 'Agosto', 'Call Date': '2025-08-04', 'HANDLED': 30, 'OIR (%)': 96.0, 'AHT (seg)': 580.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 91.0, 'Availability (%)': 99.6},
+    {'Mes': 'Agosto', 'Call Date': '2025-08-05', 'HANDLED': 38, 'OIR (%)': 100.0, 'AHT (seg)': 630.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 93.0, 'Availability (%)': 99.7},
     {'Mes': 'Agosto', 'Call Date': '2025-08-07', 'HANDLED': 37, 'OIR (%)': 100.0, 'AHT (seg)': 615.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 88.0, 'Availability (%)': 99.6},
-    {'Mes': 'Agosto', 'Call Date': '2025-08-08', 'HANDLED':35, 'OIR (%)': 99.0, 'AHT (seg)': 595.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 90.0, 'Availability (%)': 100.0},
+    {'Mes': 'Agosto', 'Call Date': '2025-08-08', 'HANDLED': 35, 'OIR (%)': 99.0, 'AHT (seg)': 595.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 90.0, 'Availability (%)': 100.0},
     {'Mes': 'Agosto', 'Call Date': '2025-08-09', 'HANDLED': 31, 'OIR (%)': 100.0, 'AHT (seg)': 605.0, 'PS & Compliance (%)': 75.0, 'RTA (%)': 84.0, 'Availability (%)': 99.7},
     {'Mes': 'Agosto', 'Call Date': '2025-08-10', 'HANDLED': 34, 'OIR (%)': 98.0, 'AHT (seg)': 585.0, 'PS & Compliance (%)': 100.0, 'RTA (%)': 92.0, 'Availability (%)': 99.8},
     {'Mes': 'Agosto', 'Call Date': '2025-08-13', 'HANDLED': 9, 'OIR (%)': None, 'AHT (seg)': 826.6, 'PS & Compliance (%)': None, 'RTA (%)': 73.3, 'Availability (%)': 99.1},
@@ -149,257 +176,461 @@ daily_data = [
     {'Mes': 'Septiembre', 'Call Date': '2025-09-09', 'HANDLED': 27, 'OIR (%)': 100.0, 'AHT (seg)': 740.4, 'PS & Compliance (%)': None, 'RTA (%)': 85.2, 'Availability (%)': 100.0},
 ]
 
-# -----------------------------------------------------------------------------
-# Ordena la lista por mes y fecha (por si agregas datos nuevos)
-# -----------------------------------------------------------------------------
+# =============================================================================
+# 2. ORDENAMIENTO DE DATOS POR FECHA
+# =============================================================================
+
 def parse_date(row):
+    """
+    Convierte la fecha de string a objeto datetime para ordenamiento.
+    
+    Args:
+        row (dict): Diccionario con datos de una fila que contiene 'Call Date'
+        
+    Returns:
+        datetime: Objeto datetime de la fecha o datetime.min si hay error
+    """
     try:
         return datetime.strptime(row['Call Date'], "%Y-%m-%d")
     except Exception:
         return datetime.min
 
+# Ordena los datos diarios por mes y fecha (útil cuando se agregan datos nuevos)
 daily_data = sorted(daily_data, key=lambda x: (x['Mes'], parse_date(x)))
 
-# -----------------------------------------------------------------------------
-# 3. DATAFRAME DE EQUIPO (métricas por empleado)
-# -----------------------------------------------------------------------------
+# =============================================================================
+# 3. CONFIGURACIÓN DE DATOS DEL EQUIPO (MÉTRICAS POR EMPLEADO)
+# =============================================================================
+# Datos del equipo con métricas de rendimiento individual
+# Cada métrica se mide como porcentaje (%) excepto AHT que está en segundos
 data_equipo = {
     'Empleado': [
         'Christian Velasco Navarro', 'Teresa Cervantes', 'Carlos Miguel', 'Torre Roberto', 'De La Cruz Paola',
         'Ramiro Partida', 'Villela Stefania', 'Izaguirre Itzel', 'Silva Bernal', 'Delgado Rafael',
         'Velasco Estrada', 'Gabriel Araceli', 'Soriano Madriz', 'Alvarez Danila'
     ],
+    # OIR: Offer and Information Rate (%)
     'OIR (%)': [95.12, 94.76, 93.53, 93.90, 93.65, 92.49, 98.31, 81.98, 70.0, 100.0, 100.0, 93.85, 92.81, 83.33],
+    # Porcentaje de tiempo en silencio durante llamadas
     'Silence Percentage (%)': [38.4, 47.6, 42.6, 45.5, 38.98, 34.0, 41.7, 38.47, 45.0, 45.02, 48.0, 49.0, 46.32, 51.18],
+    # CCA: Customer Care Advocacy (%)
     'CCA (%)': [75.2, 98.0, 100.0, 100.0, 80.77, 85.33, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
+    # CARE: Índice de cuidado al cliente (%)
     'CARE (%)': [7.36, 0.0, 8.58, 10.0, 6.36, 7.32, 10.0, 5.77, 4.67, 1.0, 0.0, 3.87, 0.7, 0.0],
+    # NICE TOUR: Métrica de evaluación de servicio (%)
     'NICE TOUR (%)': [70.5, 75.0, 84.33, 71.38, 82.14, 63.30, 50.0, 85.0, 95.83, 75.0, 73.44, 95.10, 90.0, 90.0],
+    # QA: Quality Assurance (%)
     'QA (%)': [85.0, 90.0, 90.5, 70.52, 52.0, 67.0, 100.0, 87.22, 100.0, 100.0, 100.0, 92.5, 95.0, 70.0],
+    # ACS Score: American Customer Satisfaction Score (%)
     'ACS Score (%)': [89.0, 90.0, 94.4, 97.3, 70.5, 100.0, 100.0, 84.8, 0.0, 100.0, 90.7, 92.3, 85.33, 83.33],
+    # Disponibilidad del agente (%)
     'Availability (%)': [96.51, 99.49, 99.79, 99.28, 95.96, 99.96, 98.31, 98.79, 99.74, 95.29, 99.83, 99.78, 83.35, 93.0],
+    # RTA: Real Time Adherence - Adherencia al horario (%)
     'RTA (%)': [82.94, 93.3, 88.42, 84.33, 83.06, 65.96, 82.31, 70.72, 80.96, 100.0, 73.1, 70.0, 75.0, 66.0],
+    # PS & Compliance: Professional Standards & Compliance (%)
     'PS & Compliance (%)': [86.16, 88.4, 93.28, 84.55, 83.27, 90.16, 86.33, 44.95, 98.57, 91.67, 100.0, 82.79, 85.7, 82.67],
+    # AHT: Average Handle Time (segundos)
     'AHT': [633, 655.7, 637.8, 922.8, 606.3, 890, 772.5, 609.9, 506.6, 486, 450, 440, 384, 381]
 }
+
+# Convierte los datos del equipo a DataFrame de pandas para manipulación
 df_equipo = pd.DataFrame(data_equipo)
 
-# -----------------------------------------------------------------------------
-# 4. METAS DE CADA MÉTRICA (para semáforos y validaciones)
-# -----------------------------------------------------------------------------
+# =============================================================================
+# 4. DEFINICIÓN DE METAS Y OBJETIVOS POR MÉTRICA
+# =============================================================================
+# Valores objetivo para cada métrica - utilizados para formato condicional tipo semáforo
+# Verde: Cumple objetivo, Amarillo: Cerca del objetivo, Rojo: Lejos del objetivo
 metas = {
-    'OIR (%)': 90.0,
-    'AHT (seg)': 630.0,
-    'QA (%)': 85.0,
-    'ACS (%)': 70.0,
-    'PS & Compliance (%)': 80.0,
-    'RTA (%)': 85.0,
-    'CCA (%)': 90.0,
-    'CARE (%)': 5.0,
-    'NICE TOUR (%)': 80.0,
-    'ACS Score (%)': 85.0,
-    'Silence Percentage (%)': 40.0
+    'OIR (%)': 90.0,                    # Objetivo: >= 90%
+    'AHT (seg)': 630.0,                 # Objetivo: <= 630 segundos (menor es mejor)
+    'QA (%)': 85.0,                     # Objetivo: >= 85%
+    'ACS (%)': 70.0,                    # Objetivo: >= 70%
+    'PS & Compliance (%)': 80.0,        # Objetivo: >= 80%
+    'RTA (%)': 85.0,                    # Objetivo: >= 85%
+    'CCA (%)': 90.0,                    # Objetivo: >= 90%
+    'CARE (%)': 5.0,                    # Objetivo: <= 5% (menor es mejor)
+    'NICE TOUR (%)': 80.0,              # Objetivo: >= 80%
+    'ACS Score (%)': 85.0,              # Objetivo: >= 85%
+    'Silence Percentage (%)': 40.0      # Objetivo: <= 40% (menor es mejor)
 }
 
-# -----------------------------------------------------------------------------
-# 5. FUNCIONES AUXILIARES
-# -----------------------------------------------------------------------------
+# =============================================================================
+# 5. FUNCIONES AUXILIARES Y UTILIDADES
+# =============================================================================
 def excel_col_letter(col_idx):
-    """Convierte índice de columna a letra de Excel (A, B, C, ...)."""
+    """
+    Convierte un índice de columna numérico a su letra correspondiente en Excel.
+    
+    Args:
+        col_idx (int): Índice de columna (0=A, 1=B, 2=C, etc.)
+        
+    Returns:
+        str: Letra de columna de Excel (A, B, C, ..., Z, AA, AB, etc.)
+        
+    Ejemplos:
+        excel_col_letter(0) -> 'A'
+        excel_col_letter(25) -> 'Z'
+        excel_col_letter(26) -> 'AA'
+    """
     return xl_col_to_name(col_idx)
 
-# -----------------------------------------------------------------------------
-# 6. RUTA DE SALIDA DEL ARCHIVO EXCEL
-# -----------------------------------------------------------------------------
+# =============================================================================
+# 6. CONFIGURACIÓN DEL ARCHIVO DE SALIDA
+# =============================================================================
+# Nombre del archivo Excel que se generará
 output_file = r'Reporte_Metricas_Christian_modified.xlsx'
 
 # =============================================================================
-# 7. PROCESO PRINCIPAL: Escritura de datos y métricas en Excel
+# 7. PROCESO PRINCIPAL: GENERACIÓN DEL REPORTE EXCEL
 # =============================================================================
-try:
-    with pd.ExcelWriter(output_file, engine='xlsxwriter') as writer:
-        workbook = writer.book
 
-        # ------------------ FORMATOS DE CELDA ------------------
-        fmt_header = workbook.add_format({
-            'bold': True, 'bg_color': '#4F81BD', 'font_color': 'white',
-            'align': 'center', 'font_size': 12
-        })
-        fmt_bold = workbook.add_format({'bold': True, 'font_size': 11})
-        fmt_int = workbook.add_format({'num_format': '0', 'font_size': 11})
-        fmt_round0 = workbook.add_format({'num_format': '0', 'font_size': 11})
+def main():
+    """
+    Función principal que genera el reporte de métricas en Excel.
+    
+    Crea un archivo Excel con dos hojas:
+    1. Daily_Data: Métricas diarias organizadas por mes
+    2. Team_August: Métricas del equipo con rankings y análisis
+    
+    Incluye:
+    - Formateo condicional tipo semáforo
+    - Tablas con estilos profesionales
+    - Gráficos de tendencias y rankings
+    - Cálculos automáticos de promedios
+    """
+    print("🚀 Iniciando generación del reporte de métricas...")
+    
+    try:
+        with pd.ExcelWriter(output_file, engine='xlsxwriter') as writer:
+            workbook = writer.book
 
-        fmt_dark_green = workbook.add_format({'bg_color': '#008000', 'font_size': 11})
-        fmt_light_green = workbook.add_format({'bg_color': '#90EE90', 'font_size': 11})
-        fmt_yellow = workbook.add_format({'bg_color': '#FFFF00', 'font_size': 11})
-        fmt_red = workbook.add_format({'bg_color': '#FF0000', 'font_size': 11})
-
-        def add_traffic_light(ws, col_idx, target, menor_mejor=False, first_row=1, last_row=None):
-            """
-            Aplica formato condicional tipo semáforo a una columna de la hoja Excel.
-            - ws: worksheet
-            - col_idx: índice de columna
-            - target: valor meta
-            - menor_mejor: si True, valores menores son mejores
-            - first_row, last_row: rango de filas
-            """
-            if last_row is None:
-                last_row = ws.dim_rowmax
-            col_letter = excel_col_letter(col_idx)
-            rng = f'{col_letter}{first_row+1}:{col_letter}{last_row+1}'
-            if menor_mejor:
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'<=', 'value': target, 'format': fmt_dark_green})
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'<=', 'value': target*1.05, 'format': fmt_light_green})
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'<=', 'value': target*1.15, 'format': fmt_yellow})
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'>', 'value': target*1.15, 'format': fmt_red})
-            else:
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'>=', 'value': target, 'format': fmt_dark_green})
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'>=', 'value': target*0.95, 'format': fmt_light_green})
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'>=', 'value': target*0.9, 'format': fmt_yellow})
-                ws.conditional_format(rng, {'type':'cell', 'criteria':'<', 'value': target*0.9, 'format': fmt_red})
-
-        # ---------------------------------------------------------------------
-        # HOJA 1: Daily_Data (tablas por mes, sin Availability)
-        # ---------------------------------------------------------------------
-        sheet_daily = 'Daily_Data'
-        ws = workbook.add_worksheet(sheet_daily)
-        writer.sheets[sheet_daily] = ws
-
-        df_daily = pd.DataFrame(daily_data)
-        grouped = df_daily.groupby('Mes')
-        current_row = 0
-        styles = ['Table Style Medium 9', 'Table Style Medium 2', 'Table Style Medium 3', 'Table Style Medium 4']
-        i = 0
-
-        for mes, df_group in grouped:
-            # Elimina columna 'Availability (%)' para la tabla diaria
-            df_group2 = df_group.drop(columns=['Availability (%)'], errors='ignore').copy()
-
-            # Escribe el nombre del mes como encabezado
-            ws.write(current_row, 0, f'Mes: {mes}', fmt_header)
-            current_row += 1
-
-            # Escribe los datos (incluye encabezados)
-            df_group2.to_excel(writer, sheet_name=sheet_daily, index=False, startrow=current_row, header=True)
-
-            rows_group = len(df_group2)
-            cols = len(df_group2.columns)
-            last_col = cols - 1
-
-            # Agrega la tabla de Excel
-            table_range = f'A{current_row+1}:{excel_col_letter(last_col)}{current_row + rows_group +1}'
-            columns = [{'header': c} for c in df_group2.columns]
-            ws.add_table(table_range, {'columns': columns, 'style': styles[i % len(styles)]})
-
-            # Fila de promedio (sin decimales)
-            avg_row = current_row + rows_group + 2
-            ws.write(avg_row-1, 0, 'Average', fmt_bold)
-            for cidx, col in enumerate(df_group2.columns):
-                if pd.api.types.is_numeric_dtype(df_group2[col]):
-                    col_letter = excel_col_letter(cidx)
-                    start = current_row + 2
-                    end = current_row + rows_group +1
-                    formula = f'=ROUND(AVERAGE({col_letter}{start}:{col_letter}{end}),0)'
-                    ws.write_formula(avg_row-1, cidx, formula)
-
-            # Ajusta el ancho de columnas
-            for j, col in enumerate(df_group2.columns):
-                max_len = max(df_group2[col].astype(str).map(len).max(), len(col)) + 4
-                ws.set_column(j, j, max_len)
-
-            # Aplica semáforo a métricas relevantes
-            daily_col_map_group = {c: j for j, c in enumerate(df_group2.columns)}
-            for metric in ['OIR (%)', 'AHT (seg)', 'PS & Compliance (%)', 'RTA (%)']:
-                if metric in metas and metric in daily_col_map_group:
-                    menor = True if metric in ['AHT (seg)'] else False
-                    add_traffic_light(ws, daily_col_map_group[metric], metas[metric], menor_mejor=menor, first_row=current_row, last_row=current_row + rows_group)
-
-            # Añade mini-gráfica OIR vs AHT para el mes
-            if ('OIR (%)' in df_group2.columns) and ('AHT (seg)' in df_group2.columns) and ('Call Date' in df_group2.columns):
-                idx_date = df_group2.columns.get_loc('Call Date')
-                idx_oir = df_group2.columns.get_loc('OIR (%)')
-                idx_aht = df_group2.columns.get_loc('AHT (seg)')
-                chart = workbook.add_chart({'type': 'line'})
-                chart.add_series({
-                    'name': 'OIR (%)',
-                    'categories': [sheet_daily, current_row+1, idx_date, current_row+rows_group, idx_date],
-                    'values':     [sheet_daily, current_row+1, idx_oir, current_row+rows_group, idx_oir],
-                })
-                chart.add_series({
-                    'name': 'AHT (seg)',
-                    'categories': [sheet_daily, current_row+1, idx_date, current_row+rows_group, idx_date],
-                    'values':     [sheet_daily, current_row+1, idx_aht, current_row+rows_group, idx_aht],
-                    'y2_axis': True
-                })
-                chart.set_title({'name': f'{mes}: OIR vs AHT'})
-                chart.set_size({'width': 360, 'height': 200})
-                insert_col = last_col + 2
-                insert_cell = f'{excel_col_letter(insert_col)}{current_row+1}'
-                ws.insert_chart(insert_cell, chart)
-
-            # Espacio antes del siguiente mes
-            current_row = avg_row + 2
-            i += 1
-
-        # ---------------------------------------------------------------------
-        # HOJA 2: Team_August (sin Availability, AHT, Silence)
-        # ---------------------------------------------------------------------
-        sheet_team = 'Team_August'
-        df_team2 = df_equipo.drop(columns=['Availability (%)', 'AHT', 'Silence Percentage (%)'], errors='ignore').copy()
-        df_team2.to_excel(writer, sheet_name=sheet_team, index=False, startrow=0)
-        ws_t = writer.sheets[sheet_team]
-        r_t, c_t = df_team2.shape
-        last_col_t = c_t - 1
-
-        table_range_t = f'A1:{excel_col_letter(last_col_t)}{r_t+1}'
-        columns_t = [{'header': c} for c in df_team2.columns]
-        ws_t.add_table(table_range_t, {'columns': columns_t, 'style':'Table Style Medium 9'})
-
-        # Fila de promedio
-        avg_row_t = r_t + 2
-        ws_t.write(avg_row_t-1, 0, 'Average', fmt_bold)
-        for cidx, col in enumerate(df_team2.columns):
-            if pd.api.types.is_numeric_dtype(df_team2[col]):
-                col_letter = excel_col_letter(cidx)
-                formula = f'=ROUND(AVERAGE({col_letter}2:{col_letter}{r_t+1}),0)'
-                ws_t.write_formula(avg_row_t-1, cidx, formula)
-
-        # Ajuste de anchos
-        for i_col, col in enumerate(df_team2.columns):
-            max_len = max(df_team2[col].astype(str).map(len).max(), len(col)) + 4
-            ws_t.set_column(i_col, i_col, max_len)
-
-        # Semáforo en Team para métricas restantes
-        for cidx, col in enumerate(df_team2.columns):
-            if col in metas:
-                menor = True if col in ['CARE (%)'] else False
-                add_traffic_light(ws_t, cidx, metas[col], menor_mejor=menor, first_row=1, last_row=r_t)
-
-        # Gráfico de ranking de OIR
-        if 'OIR (%)' in df_team2.columns:
-            chart_team = workbook.add_chart({'type':'bar'})
-            chart_team.add_series({
-                'name': 'OIR (%)',
-                'categories': [sheet_team, 1, 0, r_t, 0],
-                'values':     [sheet_team, 1, df_team2.columns.get_loc('OIR (%)'), r_t, df_team2.columns.get_loc('OIR (%)')]
+            # =================================================================
+            # CONFIGURACIÓN DE FORMATOS DE CELDA
+            # =================================================================
+            print("📊 Configurando formatos de celda...")
+            
+            # Formato para encabezados de tabla
+            fmt_header = workbook.add_format({
+                'bold': True, 'bg_color': '#4F81BD', 'font_color': 'white',
+                'align': 'center', 'font_size': 12, 'border': 1
             })
-            chart_team.set_title({'name': 'Team Ranking by OIR (%)'})
-            chart_team.set_x_axis({'name': 'OIR (%)'})
-            chart_team.set_size({'width': 720, 'height': 400})
-            ws_t.insert_chart('P2', chart_team)
+            
+            # Formato para texto en negrita
+            fmt_bold = workbook.add_format({'bold': True, 'font_size': 11})
+            
+            # Formato para números enteros
+            fmt_int = workbook.add_format({'num_format': '0', 'font_size': 11})
+            fmt_round0 = workbook.add_format({'num_format': '0', 'font_size': 11})
 
-    print(f'Archivo Excel generado: {output_file}')
+            # Formatos para semáforo (formato condicional)
+            fmt_dark_green = workbook.add_format({'bg_color': '#008000', 'font_size': 11, 'font_color': 'white'})
+            fmt_light_green = workbook.add_format({'bg_color': '#90EE90', 'font_size': 11})
+            fmt_yellow = workbook.add_format({'bg_color': '#FFFF00', 'font_size': 11})
+            fmt_red = workbook.add_format({'bg_color': '#FF0000', 'font_size': 11, 'font_color': 'white'})
 
-except PermissionError as e:
-    # Mensaje claro si el archivo está abierto o no hay permisos
-    print(f"Error: No se puede escribir en el archivo '{output_file}' debido a un problema de permisos.")
-    print("1) Cierra el archivo en Excel si está abierto.")
-    print("2) Asegúrate de tener permisos de escritura en la carpeta.")
-    print("3) O cambia la ruta de output_file a otra carpeta.")
-    print(f"Detalles del error: {e}")
+            def add_traffic_light(ws, col_idx, target, menor_mejor=False, first_row=1, last_row=None):
+                """
+                Aplica formato condicional tipo semáforo a una columna de Excel.
+                
+                Args:
+                    ws: Hoja de trabajo (worksheet) de Excel
+                    col_idx (int): Índice de la columna (0, 1, 2, ...)
+                    target (float): Valor objetivo/meta para la métrica
+                    menor_mejor (bool): True si valores menores son mejores (ej: AHT, CARE)
+                    first_row (int): Primera fila para aplicar formato
+                    last_row (int): Última fila para aplicar formato
+                    
+                Colores:
+                    - Verde oscuro: Cumple completamente el objetivo
+                    - Verde claro: Cerca del objetivo (95% o 105% según sea mayor/menor mejor)
+                    - Amarillo: Moderadamente alejado (90% o 115% según sea mayor/menor mejor)
+                    - Rojo: Muy alejado del objetivo
+                """
+                if last_row is None:
+                    last_row = ws.dim_rowmax
+                    
+                col_letter = excel_col_letter(col_idx)
+                rng = f'{col_letter}{first_row+1}:{col_letter}{last_row+1}'
+                
+                if menor_mejor:
+                    # Para métricas donde menor es mejor (ej: AHT, CARE)
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '<=', 'value': target, 
+                        'format': fmt_dark_green
+                    })
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '<=', 'value': target*1.05, 
+                        'format': fmt_light_green
+                    })
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '<=', 'value': target*1.15, 
+                        'format': fmt_yellow
+                    })
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '>', 'value': target*1.15, 
+                        'format': fmt_red
+                    })
+                else:
+                    # Para métricas donde mayor es mejor (ej: OIR, QA, RTA)
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '>=', 'value': target, 
+                        'format': fmt_dark_green
+                    })
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '>=', 'value': target*0.95, 
+                        'format': fmt_light_green
+                    })
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '>=', 'value': target*0.9, 
+                        'format': fmt_yellow
+                    })
+                    ws.conditional_format(rng, {
+                        'type': 'cell', 'criteria': '<', 'value': target*0.9, 
+                        'format': fmt_red
+                    })
 
-except Exception as e:
-    # Mensaje para cualquier otro error inesperado
-    print(f"Se produjo un error inesperado: {e}")
+            # =================================================================
+            # HOJA 1: DATOS DIARIOS (DAILY_DATA)
+            # =================================================================
+            print("📅 Generando hoja de datos diarios...")
+            
+            sheet_daily = 'Daily_Data'
+            ws = workbook.add_worksheet(sheet_daily)
+            writer.sheets[sheet_daily] = ws
+
+            # Convierte datos diarios a DataFrame y agrupa por mes
+            df_daily = pd.DataFrame(daily_data)
+            grouped = df_daily.groupby('Mes')
+            current_row = 0
+            
+            # Estilos de tabla para alternar entre meses
+            styles = [
+                'Table Style Medium 9', 'Table Style Medium 2', 
+                'Table Style Medium 3', 'Table Style Medium 4'
+            ]
+            i = 0
+
+            for mes, df_group in grouped:
+                print(f"  📊 Procesando mes: {mes}")
+                
+                # Remueve la columna 'Availability (%)' de la vista diaria
+                df_group2 = df_group.drop(columns=['Availability (%)'], errors='ignore').copy()
+
+                # Escribe encabezado del mes
+                ws.write(current_row, 0, f'Mes: {mes}', fmt_header)
+                current_row += 1
+
+                # Escribe los datos del grupo en la hoja
+                df_group2.to_excel(writer, sheet_name=sheet_daily, index=False, 
+                                 startrow=current_row, header=True)
+
+                rows_group = len(df_group2)
+                cols = len(df_group2.columns)
+                last_col = cols - 1
+
+                # Crea tabla Excel con formato profesional
+                table_range = f'A{current_row+1}:{excel_col_letter(last_col)}{current_row + rows_group +1}'
+                columns = [{'header': c} for c in df_group2.columns]
+                ws.add_table(table_range, {
+                    'columns': columns, 
+                    'style': styles[i % len(styles)]
+                })
+
+                # Agrega fila de promedio (redondeado a entero)
+                avg_row = current_row + rows_group + 2
+                ws.write(avg_row-1, 0, 'Average', fmt_bold)
+                
+                for cidx, col in enumerate(df_group2.columns):
+                    if pd.api.types.is_numeric_dtype(df_group2[col]):
+                        col_letter = excel_col_letter(cidx)
+                        start = current_row + 2
+                        end = current_row + rows_group + 1
+                        formula = f'=ROUND(AVERAGE({col_letter}{start}:{col_letter}{end}),0)'
+                        ws.write_formula(avg_row-1, cidx, formula)
+
+                # Ajusta ancho de columnas automáticamente
+                for j, col in enumerate(df_group2.columns):
+                    max_len = max(df_group2[col].astype(str).map(len).max(), len(col)) + 4
+                    ws.set_column(j, j, max_len)
+
+                # Aplica formato condicional semáforo a métricas clave
+                daily_col_map_group = {c: j for j, c in enumerate(df_group2.columns)}
+                semaforo_metrics = [
+                    ('OIR (%)', False),           # Mayor es mejor
+                    ('AHT (seg)', True),          # Menor es mejor  
+                    ('PS & Compliance (%)', False), # Mayor es mejor
+                    ('RTA (%)', False)            # Mayor es mejor
+                ]
+                
+                for metric, menor_mejor in semaforo_metrics:
+                    if metric in metas and metric in daily_col_map_group:
+                        add_traffic_light(
+                            ws, daily_col_map_group[metric], metas[metric], 
+                            menor_mejor=menor_mejor, first_row=current_row, 
+                            last_row=current_row + rows_group
+                        )
+
+                # Agrega mini-gráfico de tendencia OIR vs AHT para cada mes
+                if all(col in df_group2.columns for col in ['OIR (%)', 'AHT (seg)', 'Call Date']):
+                    print(f"  📈 Creando gráfico de tendencias para {mes}")
+                    
+                    idx_date = df_group2.columns.get_loc('Call Date')
+                    idx_oir = df_group2.columns.get_loc('OIR (%)')
+                    idx_aht = df_group2.columns.get_loc('AHT (seg)')
+                    
+                    chart = workbook.add_chart({'type': 'line'})
+                    chart.add_series({
+                        'name': 'OIR (%)',
+                        'categories': [sheet_daily, current_row+1, idx_date, current_row+rows_group, idx_date],
+                        'values': [sheet_daily, current_row+1, idx_oir, current_row+rows_group, idx_oir],
+                    })
+                    chart.add_series({
+                        'name': 'AHT (seg)',
+                        'categories': [sheet_daily, current_row+1, idx_date, current_row+rows_group, idx_date],
+                        'values': [sheet_daily, current_row+1, idx_aht, current_row+rows_group, idx_aht],
+                        'y2_axis': True  # Segundo eje Y para AHT
+                    })
+                    
+                    chart.set_title({'name': f'{mes}: Tendencia OIR vs AHT'})
+                    chart.set_x_axis({'name': 'Fecha'})
+                    chart.set_y_axis({'name': 'OIR (%)'})
+                    chart.set_y2_axis({'name': 'AHT (segundos)'})
+                    chart.set_size({'width': 480, 'height': 300})
+                    
+                    # Inserta gráfico a la derecha de los datos
+                    insert_col = last_col + 2
+                    insert_cell = f'{excel_col_letter(insert_col)}{current_row+1}'
+                    ws.insert_chart(insert_cell, chart)
+
+                # Espacio antes del siguiente mes
+                current_row = avg_row + 2
+                i += 1
+
+            # =================================================================
+            # HOJA 2: ANÁLISIS DEL EQUIPO (TEAM_AUGUST)
+            # =================================================================
+            print("👥 Generando hoja de análisis del equipo...")
+            
+            sheet_team = 'Team_August'
+            # Remueve métricas específicas para enfocarse en las más relevantes
+            df_team2 = df_equipo.drop(
+                columns=['Availability (%)', 'AHT', 'Silence Percentage (%)'], 
+                errors='ignore'
+            ).copy()
+            
+            df_team2.to_excel(writer, sheet_name=sheet_team, index=False, startrow=0)
+            ws_t = writer.sheets[sheet_team]
+            r_t, c_t = df_team2.shape
+            last_col_t = c_t - 1
+
+            # Crea tabla principal del equipo
+            table_range_t = f'A1:{excel_col_letter(last_col_t)}{r_t+1}'
+            columns_t = [{'header': c} for c in df_team2.columns]
+            ws_t.add_table(table_range_t, {
+                'columns': columns_t, 
+                'style': 'Table Style Medium 9'
+            })
+
+            # Agrega fila de promedio del equipo
+            avg_row_t = r_t + 2
+            ws_t.write(avg_row_t-1, 0, 'Team Average', fmt_bold)
+            
+            for cidx, col in enumerate(df_team2.columns):
+                if pd.api.types.is_numeric_dtype(df_team2[col]):
+                    col_letter = excel_col_letter(cidx)
+                    formula = f'=ROUND(AVERAGE({col_letter}2:{col_letter}{r_t+1}),1)'
+                    ws_t.write_formula(avg_row_t-1, cidx, formula)
+
+            # Ajusta ancho de columnas automáticamente
+            for i_col, col in enumerate(df_team2.columns):
+                max_len = max(df_team2[col].astype(str).map(len).max(), len(col)) + 4
+                ws_t.set_column(i_col, i_col, max_len)
+
+            # Aplica formato condicional semáforo a todas las métricas del equipo
+            print("  🚦 Aplicando formato condicional semáforo...")
+            
+            for cidx, col in enumerate(df_team2.columns):
+                if col in metas:
+                    # Determina si menor es mejor para esta métrica
+                    menor_mejor = col in ['CARE (%)']
+                    add_traffic_light(
+                        ws_t, cidx, metas[col], 
+                        menor_mejor=menor_mejor, first_row=1, last_row=r_t
+                    )
+
+            # Crea gráfico de ranking por OIR
+            if 'OIR (%)' in df_team2.columns:
+                print("  📊 Creando gráfico de ranking OIR...")
+                
+                chart_team = workbook.add_chart({'type': 'bar'})
+                chart_team.add_series({
+                    'name': 'OIR (%)',
+                    'categories': [sheet_team, 1, 0, r_t, 0],  # Nombres de empleados
+                    'values': [sheet_team, 1, df_team2.columns.get_loc('OIR (%)'), 
+                              r_t, df_team2.columns.get_loc('OIR (%)')]
+                })
+                
+                chart_team.set_title({'name': 'Ranking del Equipo por OIR (%)'})
+                chart_team.set_x_axis({'name': 'OIR (%)', 'min': 0, 'max': 100})
+                chart_team.set_y_axis({'name': 'Empleados'})
+                chart_team.set_size({'width': 720, 'height': 400})
+                
+                # Posiciona el gráfico a la derecha de los datos
+                ws_t.insert_chart('P2', chart_team)
+
+        print(f"✅ Archivo Excel generado exitosamente: {output_file}")
+        print(f"📂 Ubicación: {output_file}")
+        print("🎉 ¡Proceso completado!")
+
+    except PermissionError as e:
+        print("❌ ERROR DE PERMISOS:")
+        print(f"   No se puede escribir en el archivo '{output_file}'")
+        print("💡 SOLUCIONES:")
+        print("   1. Cierra el archivo Excel si está abierto")
+        print("   2. Verifica que tengas permisos de escritura en la carpeta")
+        print("   3. Cambia la variable 'output_file' a otra ubicación")
+        print(f"   📋 Detalles técnicos: {e}")
+        return False
+
+    except Exception as e:
+        print("❌ ERROR INESPERADO:")
+        print(f"   {str(e)}")
+        print("💡 SUGERENCIAS:")
+        print("   - Verifica que todas las librerías estén instaladas")
+        print("   - Revisa que los datos estén en el formato correcto")
+        print("   - Contacta al administrador del sistema si persiste")
+        return False
+    
+    return True
+
+# =============================================================================
+# 8. EJECUCIÓN DEL PROGRAMA PRINCIPAL
+# =============================================================================
+
+if __name__ == "__main__":
+    """
+    Punto de entrada principal del programa.
+    
+    Ejecuta la función main() y maneja el resultado de la operación.
+    """
+    print("=" * 60)
+    print("📊 SISTEMA DE REPORTES DE MÉTRICAS - PANERA BREAD")
+    print("   Generador Automatizado de Reportes Excel")
+    print("=" * 60)
+    
+    success = main()
+    
+    if success:
+        print("\n" + "=" * 60)
+        print("🎊 REPORTE GENERADO CORRECTAMENTE")
+        print("   El archivo Excel está listo para su uso")
+        print("=" * 60)
+    else:
+        print("\n" + "=" * 60)
+        print("💥 ERROR EN LA GENERACIÓN DEL REPORTE")
+        print("   Revisa los mensajes anteriores para más detalles")
+        print("=" * 60)
 
 # =============================================================================
 # FIN DEL SCRIPT
