@@ -321,3 +321,34 @@ Este proyecto está bajo la Licencia MIT - ve el archivo [LICENSE](LICENSE) para
 ⭐ **¡No olvides dar una estrella si te ayudó este proyecto!** ⭐
 
 </div>
+
+---
+
+## ⚡ **Inicio Rápido (Quick Start)**
+
+### **🚀 Opción 1: Configuración Automática (Recomendada para nuevos usuarios)**
+```bash
+# 1. Clona el repositorio
+git clone https://github.com/ByCulichi/Culichi-Metrics.git
+cd Culichi-Metrics
+
+# 2. Ejecuta la configuración automática
+python setup.py
+
+# 3. ¡Listo! El reporte se generará automáticamente
+```
+
+### **⚡ Opción 2: Configuración Manual**
+```bash
+# 1. Instalar dependencias
+pip install -r requirements.txt
+
+# 2. Generar reporte
+python to_excel.PY
+```
+
+### **📊 Resultado**
+- ✅ Archivo Excel: `Reporte_Metricas_Christian_modified.xlsx`
+- 📋 2 hojas: Datos diarios + Análisis del equipo  
+- 🚦 Formato condicional automático
+- 📈 Gráficos de tendencias y rankings
