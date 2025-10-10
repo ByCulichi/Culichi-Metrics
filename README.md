@@ -1,4 +1,4 @@
-# 📊 Sistema de Reportes de Métricas - Panera Bread
+# 📊 Metrics Reporting System - Panera Bread
 
 <div align="center">
 
@@ -6,45 +6,85 @@
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Status](https://img.shields.io/badge/status-Active-success.svg)
 
-**Generador Automatizado de Reportes Excel con Métricas de Rendimiento KPI**
+**Automated Excel Report Generator with KPI Performance Metrics**
 
-*Transforma datos de rendimiento en reportes profesionales con formato condicional, gráficos y análisis automático*
+*Transform performance data into professional reports with conditional formatting, charts, and automated analysis*
 
 </div>
 
 ---
 
-## 🎯 **Descripción del Proyecto**
+## 🎯 **Project Description**
 
-Este sistema automatiza la generación de reportes Excel profesionales para el análisis de métricas de rendimiento del equipo de atención al cliente de Panera Bread. El script procesa datos de performance diarios e individuales, aplicando formato condicional tipo semáforo, generando gráficos de tendencias y creando análisis comparativos del equipo.
+This system automates the generation of professional Excel reports for analyzing performance metrics of the Panera Bread customer service team. The script processes daily and individual performance data, applying traffic light conditional formatting, generating trend charts, and creating comparative team analysis.
 
-### ✨ **Características Principales**
+### **📊 What Does It Do?**
 
-- 🔄 **Automatización Completa**: Genera reportes sin intervención manual
-- 🚦 **Formato Condicional Inteligente**: Sistema de semáforo (Verde/Amarillo/Rojo) basado en metas
-- 📈 **Gráficos Automáticos**: Tendencias por mes y rankings del equipo
-- 📊 **Múltiples Hojas**: Datos diarios y análisis del equipo en pestañas separadas
-- 💼 **Formato Profesional**: Tablas con estilos corporativos y fórmulas automáticas
-- 🎨 **Visual y Intuitivo**: Interfaz clara con iconos y colores representativos
+The system takes raw performance data and transforms it into a polished, professional Excel report with:
+- **Automated Data Processing**: Converts Python dictionaries into formatted Excel tables
+- **Visual Analytics**: Generates charts showing performance trends over time
+- **Performance Indicators**: Color-codes metrics based on target achievement
+- **Multi-Sheet Reports**: Organizes data into logical sections for easy navigation
+
+### ✨ **Key Features**
+
+- 🔄 **Complete Automation**: Generates reports without manual intervention
+- 🚦 **Smart Conditional Formatting**: Traffic light system (Green/Yellow/Red) based on goals
+- 📈 **Automatic Charts**: Monthly trends and team rankings
+- 📊 **Multiple Sheets**: Daily data and team analysis in separate tabs
+- 💼 **Professional Format**: Tables with corporate styles and automatic formulas
+- 🎨 **Visual and Intuitive**: Clear interface with representative icons and colors
+
+### 📸 **Report Preview**
+
+The system generates a comprehensive Excel report with two main sheets:
+
+| Daily Metrics | Team Performance |
+|:-------------:|:----------------:|
+| ![Daily Metrics Overview](docs/images/daily_metrics_preview.png) | ![Team Performance Overview](docs/images/team_performance_preview.png) |
+| Monthly KPI tracking with trend analysis | Individual employee metrics and rankings |
+
+### **🔄 System Workflow**
+
+```mermaid
+graph LR
+    A[Raw Data] --> B[Python Script]
+    B --> C[Data Processing]
+    C --> D[Apply Formatting]
+    D --> E[Generate Charts]
+    E --> F[Excel Report]
+    F --> G[Ready to Use]
+    
+    style A fill:#e1f5ff
+    style F fill:#c8e6c9
+    style G fill:#fff9c4
+```
+
+**Process Flow:**
+1. 📥 Input: Raw performance data (Python dictionaries)
+2. 🔄 Processing: Data validation and transformation with pandas
+3. 🎨 Formatting: Apply traffic light conditional formatting
+4. 📊 Visualization: Generate trend charts and rankings
+5. 💾 Output: Professional Excel file ready for stakeholders
 
 ---
 
-## 🚀 **Instalación y Configuración**
+## 🚀 **Installation and Setup**
 
-### **Requisitos del Sistema**
-- 🐍 **Python 3.8+** (Recomendado: Python 3.10+)
-- 💻 **Sistema Operativo**: Windows, macOS, o Linux
-- 📦 **Gestor de Paquetes**: pip
+### **System Requirements**
+- 🐍 **Python 3.8+** (Recommended: Python 3.10+)
+- 💻 **Operating System**: Windows, macOS, or Linux
+- 📦 **Package Manager**: pip
 
-### **Instalación Paso a Paso**
+### **Step-by-Step Installation**
 
-1. **Clonar el Repositorio**
+1. **Clone the Repository**
    ```bash
    git clone https://github.com/ByCulichi/Culichi-Metrics.git
    cd Culichi-Metrics
    ```
 
-2. **Crear Entorno Virtual** (Recomendado)
+2. **Create Virtual Environment** (Recommended)
    ```bash
    python -m venv venv
    
@@ -55,172 +95,200 @@ Este sistema automatiza la generación de reportes Excel profesionales para el a
    source venv/bin/activate
    ```
 
-3. **Instalar Dependencias**
+3. **Install Dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Verificar Instalación**
+4. **Verify Installation**
    ```bash
    python to_excel.PY
    ```
 
-### 📦 **Dependencias**
+### 📦 **Dependencies**
 
-| Librería | Versión | Propósito |
-|----------|---------|-----------|
-| `pandas` | >=2.0.0 | Manipulación y análisis de datos |
-| `xlsxwriter` | >=3.0.0 | Generación de archivos Excel con formato |
-| `openpyxl` | >=3.0.0 | Soporte adicional para Excel |
+| Library | Version | Purpose |
+|---------|---------|---------|
+| `pandas` | >=2.0.0 | Data manipulation and analysis |
+| `xlsxwriter` | >=3.0.0 | Excel file generation with formatting |
+| `openpyxl` | >=3.0.0 | Additional Excel support |
 
 ---
 
-## 📈 **Métricas y KPIs Incluidos**
+## 📈 **Metrics and KPIs Included**
 
-### **📅 Datos Diarios por Mes**
-- **HANDLED**: Número de llamadas atendidas
-- **OIR (%)**: Offer and Information Rate - Tasa de oferta e información
-- **AHT (seg)**: Average Handle Time - Tiempo promedio de atención
+### **📅 Daily Data by Month**
+- **HANDLED**: Number of calls answered
+- **OIR (%)**: Offer and Information Rate
+- **AHT (sec)**: Average Handle Time
 - **PS & Compliance (%)**: Professional Standards & Compliance
-- **RTA (%)**: Real Time Adherence - Adherencia al horario
+- **RTA (%)**: Real Time Adherence
 
-### **👥 Análisis Individual del Equipo**
-- **OIR (%)**: Tasa de oferta e información por empleado
-- **QA (%)**: Quality Assurance - Aseguramiento de calidad  
-- **CCA (%)**: Customer Care Advocacy - Defensa del cuidado al cliente
-- **CARE (%)**: Índice de cuidado al cliente
-- **NICE TOUR (%)**: Métrica de evaluación de servicio
+### **👥 Individual Team Analysis**
+- **OIR (%)**: Offer and information rate per employee
+- **QA (%)**: Quality Assurance  
+- **CCA (%)**: Customer Care Advocacy
+- **CARE (%)**: Customer care index
+- **NICE TOUR (%)**: Service evaluation metric
 - **ACS Score (%)**: American Customer Satisfaction Score
-- **RTA (%)**: Adherencia al horario en tiempo real
-- **PS & Compliance (%)**: Estándares profesionales y cumplimiento
+- **RTA (%)**: Real-time schedule adherence
+- **PS & Compliance (%)**: Professional standards and compliance
 
-### 🎯 **Metas y Objetivos**
+### 🎯 **Goals and Objectives**
 
-| Métrica | Objetivo | Tipo | Descripción |
-|---------|----------|------|-------------|
-| OIR (%) | ≥ 90% | Mayor es mejor | Eficiencia en ofertas e información |
-| AHT (seg) | ≤ 630 seg | Menor es mejor | Tiempo óptimo por llamada |
-| QA (%) | ≥ 85% | Mayor es mejor | Calidad del servicio |
-| RTA (%) | ≥ 85% | Mayor es mejor | Puntualidad y adherencia |
-| CARE (%) | ≤ 5% | Menor es mejor | Minimizar problemas de atención |
-
----
-
-## 🎨 **Estructura del Reporte Generado**
-
-### **📋 Hoja 1: "Daily_Data"**
-```
-📊 Datos Diarios Organizados por Mes
-├── 📅 Abril 2025
-│   ├── Tabla con formato profesional
-│   ├── Fila de promedios automáticos
-│   ├── 🚦 Formato condicional (semáforo)
-│   └── 📈 Gráfico de tendencia OIR vs AHT
-├── 📅 Mayo 2025
-│   └── [Misma estructura...]
-└── 📅 [Otros meses...]
-```
-
-### **👥 Hoja 2: "Team_August"**
-```
-📊 Análisis Individual del Equipo
-├── 📋 Tabla de métricas por empleado
-├── 🧮 Promedios del equipo
-├── 🚦 Formato condicional por métrica
-└── 📊 Gráfico de ranking por OIR (%)
-```
+| Metric | Target | Type | Description |
+|--------|--------|------|-------------|
+| OIR (%) | ≥ 90% | Higher is better | Efficiency in offers and information |
+| AHT (sec) | ≤ 630 sec | Lower is better | Optimal time per call |
+| QA (%) | ≥ 85% | Higher is better | Service quality |
+| RTA (%) | ≥ 85% | Higher is better | Punctuality and adherence |
+| CARE (%) | ≤ 5% | Lower is better | Minimize service issues |
 
 ---
 
-## 🎯 **Cómo Usar el Sistema**
+## 🎨 **Generated Report Structure**
 
-### **🔧 Ejecución Básica**
+### **📋 Sheet 1: "Daily_Data"**
+```
+📊 Daily Data Organized by Month
+├── 📅 April 2025
+│   ├── Table with professional formatting
+│   ├── Automatic averages row
+│   ├── 🚦 Conditional formatting (traffic light)
+│   └── 📈 Trend chart OIR vs AHT
+├── 📅 May 2025
+│   └── [Same structure...]
+└── 📅 [Other months...]
+```
+
+![Daily Data Sheet Example](docs/images/daily_data_example.png)
+
+*The Daily Data sheet displays monthly performance metrics with color-coded cells (green for meeting targets, yellow for acceptable, red for critical) and includes automatic trend charts for visual analysis.*
+
+> 📝 **Note**: See [Visual Guide](docs/images/VISUAL_GUIDE.md) for an ASCII representation of the report structure.
+
+### **👥 Sheet 2: "Team_August"**
+```
+📊 Individual Team Analysis
+├── 📋 Metrics table per employee
+├── 🧮 Team averages
+├── 🚦 Conditional formatting per metric
+└── 📊 Ranking chart by OIR (%)
+```
+
+![Team Analysis Sheet Example](docs/images/team_analysis_example.png)
+
+*The Team Analysis sheet provides individual employee performance with traffic light formatting and a horizontal bar chart ranking team members by their OIR percentage.*
+
+---
+
+## 🎯 **How to Use the System**
+
+### **🔧 Basic Execution**
 ```bash
 python to_excel.PY
 ```
 
-### **📝 Personalización de Datos**
+### **📝 Data Customization**
 
-**1. Actualizar Datos Diarios:**
+**1. Update Daily Data:**
 ```python
-# Buscar la sección: daily_data = [
-# Agregar nuevos registros siguiendo el formato:
+# Find the section: daily_data = [
+# Add new records following the format:
 {
-    'Mes': 'Octubre', 
+    'Mes': 'October', 
     'Call Date': '2025-10-01', 
     'HANDLED': 45, 
     'OIR (%)': 95.0, 
     'AHT (seg)': 580.0,
-    # ... otras métricas
+    # ... other metrics
 }
 ```
 
-**2. Actualizar Datos del Equipo:**
+**2. Update Team Data:**
 ```python
-# Buscar la sección: data_equipo = {
-# Modificar listas correspondientes:
-'Empleado': ['Nuevo Empleado', ...],
+# Find the section: data_equipo = {
+# Modify corresponding lists:
+'Empleado': ['New Employee', ...],
 'OIR (%)': [92.5, ...],
-# ... otras métricas
+# ... other metrics
 ```
 
-**3. Ajustar Metas:**
+**3. Adjust Goals:**
 ```python
-# Buscar la sección: metas = {
-# Modificar valores objetivo:
-'OIR (%)': 95.0,  # Nueva meta
-'AHT (seg)': 600.0,  # Nuevo objetivo
+# Find the section: metas = {
+# Modify target values:
+'OIR (%)': 95.0,  # New goal
+'AHT (seg)': 600.0,  # New target
 ```
 
-### **🎨 Personalizar Nombre del Archivo**
+### **🎨 Customize File Name**
 ```python
-# Línea ~282 en to_excel.PY
-output_file = r'Mi_Reporte_Personalizado.xlsx'
+# Line ~282 in to_excel.PY
+output_file = r'My_Custom_Report.xlsx'
 ```
 
 ---
 
-## 🚦 **Sistema de Formato Condicional**
+## 🚦 **Conditional Formatting System**
 
-El sistema utiliza colores intuitivos para evaluar el rendimiento:
+The system uses intuitive colors to evaluate performance:
 
-| Color | Significado | Criterio |
-|-------|------------|----------|
-| 🟢 **Verde Oscuro** | Excelente - Cumple objetivo | ≥ 100% de la meta |
-| 🟢 **Verde Claro** | Bueno - Cerca del objetivo | ≥ 95% de la meta |
-| 🟡 **Amarillo** | Aceptable - Necesita mejora | ≥ 90% de la meta |
-| 🔴 **Rojo** | Crítico - Requiere atención | < 90% de la meta |
+| Color | Meaning | Criteria |
+|-------|---------|----------|
+| 🟢 **Dark Green** | Excellent - Meets goal | ≥ 100% of target |
+| 🟢 **Light Green** | Good - Close to goal | ≥ 95% of target |
+| 🟡 **Yellow** | Acceptable - Needs improvement | ≥ 90% of target |
+| 🔴 **Red** | Critical - Requires attention | < 90% of target |
 
-*Para métricas donde "menor es mejor" (AHT, CARE), los criterios se invierten*
+*For metrics where "lower is better" (AHT, CARE), the criteria are inverted*
+
+### **Example Visual**
+
+```
+OIR (%) Target: 90%
+┌─────────┬──────────────┐
+│ Value   │ Color        │
+├─────────┼──────────────┤
+│ 95.2%   │ 🟢 Dark Green│ (≥100% of 90% = ≥90%)
+│ 88.5%   │ 🟢 Light Green│ (≥95% of 90% = ≥85.5%)
+│ 82.0%   │ 🟡 Yellow    │ (≥90% of 90% = ≥81%)
+│ 75.3%   │ 🔴 Red       │ (<90% of 90% = <81%)
+└─────────┴──────────────┘
+```
+
+![Conditional Formatting Example](docs/images/conditional_formatting_demo.png)
+
+*The traffic light system automatically highlights performance levels, making it easy to identify areas that need attention.*
 
 ---
 
-## 🛠️ **Mantenimiento y Personalización**
+## 🛠️ **Maintenance and Customization**
 
-### **📁 Estructura del Código**
+### **📁 Code Structure**
 ```
 to_excel.PY
-├── 📦 Importaciones y configuración
-├── 📊 Datos diarios (daily_data)
-├── 👥 Datos del equipo (data_equipo)
-├── 🎯 Metas y objetivos (metas)
-├── 🔧 Funciones auxiliares
-├── 🎨 Función principal (main)
-└── 🚀 Punto de entrada
+├── 📦 Imports and configuration
+├── 📊 Daily data (daily_data)
+├── 👥 Team data (data_equipo)
+├── 🎯 Goals and objectives (metas)
+├── 🔧 Helper functions
+├── 🎨 Main function (main)
+└── 🚀 Entry point
 ```
 
-### **🔧 Funciones Principales**
-- `parse_date()`: Convierte fechas para ordenamiento
-- `excel_col_letter()`: Convierte índices a letras de columna Excel
-- `add_traffic_light()`: Aplica formato condicional semáforo
-- `main()`: Función principal de generación del reporte
+### **🔧 Main Functions**
+- `parse_date()`: Converts dates for sorting
+- `excel_col_letter()`: Converts indexes to Excel column letters
+- `add_traffic_light()`: Applies traffic light conditional formatting
+- `main()`: Main report generation function
 
-### **🎨 Personalización de Estilos**
+### **🎨 Style Customization**
 ```python
-# Modificar formatos de celda (línea ~315)
+# Modify cell formats (line ~315)
 fmt_header = workbook.add_format({
     'bold': True, 
-    'bg_color': '#TU_COLOR',  # Cambiar color
+    'bg_color': '#YOUR_COLOR',  # Change color
     'font_color': 'white',
     'align': 'center'
 })
@@ -228,9 +296,9 @@ fmt_header = workbook.add_format({
 
 ---
 
-## 🐛 **Solución de Problemas**
+## 🐛 **Troubleshooting**
 
-### **❌ Errores Comunes**
+### **❌ Common Errors**
 
 **1. `ModuleNotFoundError: No module named 'pandas'`**
 ```bash
@@ -238,117 +306,143 @@ pip install -r requirements.txt
 ```
 
 **2. `PermissionError: [Errno 13] Permission denied`**
-- ✅ Cierra el archivo Excel si está abierto
-- ✅ Verifica permisos de escritura en la carpeta
-- ✅ Ejecuta como administrador si es necesario
+- ✅ Close the Excel file if it's open
+- ✅ Verify write permissions in the folder
+- ✅ Run as administrator if necessary
 
-**3. `FileNotFoundError` o problemas de ruta**
-- ✅ Verifica que estés en el directorio correcto
-- ✅ Usa rutas absolutas si hay problemas
+**3. `FileNotFoundError` or path issues**
+- ✅ Verify you're in the correct directory
+- ✅ Use absolute paths if there are problems
 
-**4. Datos no se muestran correctamente**
-- ✅ Verifica formato de fechas (`YYYY-MM-DD`)
-- ✅ Asegúrate que las claves de los diccionarios coincidan
-- ✅ Revisa que los datos numéricos no estén como texto
+**4. Data not displaying correctly**
+- ✅ Verify date format (`YYYY-MM-DD`)
+- ✅ Ensure dictionary keys match
+- ✅ Check that numeric data is not stored as text
 
-### **🔍 Modo Debug**
-Para ver más detalles en caso de errores, modifica:
+### **🔍 Debug Mode**
+To see more details in case of errors, modify:
 ```python
-# Agregar al final de main():
+# Add at the end of main():
 import traceback
 traceback.print_exc()
 ```
 
 ---
 
-## 🤝 **Contribución**
+## 🤝 **Contributing**
 
-### **💡 Cómo Contribuir**
-1. 🍴 Fork el repositorio
-2. 🌟 Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. 💻 Realiza tus cambios y añade documentación
-4. ✅ Ejecuta las pruebas
-5. 📝 Commit tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
-6. 📤 Push a la rama (`git push origin feature/nueva-funcionalidad`)
-7. 🔄 Abre un Pull Request
+### **💡 How to Contribute**
+1. 🍴 Fork the repository
+2. 🌟 Create a branch for your feature (`git checkout -b feature/new-feature`)
+3. 💻 Make your changes and add documentation
+4. ✅ Run the tests
+5. 📝 Commit your changes (`git commit -m 'Add new feature'`)
+6. 📤 Push to the branch (`git push origin feature/new-feature`)
+7. 🔄 Open a Pull Request
 
-### **📋 Estándares de Código**
-- 📝 **Documentación**: Todas las funciones deben tener docstrings
-- 🐍 **PEP 8**: Seguir estándares de estilo de Python
-- 💬 **Comentarios**: Código autoexplicativo con comentarios claros
-- ✅ **Pruebas**: Verificar funcionamiento antes de contribuir
-
----
-
-## 👥 **Equipo**
-
-### **✨ Mantenedores**
-- **Christian Velasco Navarro** - *Desarrollador Principal* - [@ByCulichi](https://github.com/ByCulichi)
-
-### **🙏 Agradecimientos**
-- Equipo de Panera Bread por los requerimientos
-- Comunidad de Python por las librerías utilizadas
-- Contribuidores que ayudan a mejorar el proyecto
+### **📋 Code Standards**
+- 📝 **Documentation**: All functions must have docstrings
+- 🐍 **PEP 8**: Follow Python style standards
+- 💬 **Comments**: Self-explanatory code with clear comments
+- ✅ **Tests**: Verify functionality before contributing
 
 ---
 
-## 📄 **Licencia**
+## 👥 **Team**
 
-Este proyecto está bajo la Licencia MIT - ve el archivo [LICENSE](LICENSE) para más detalles.
+### **✨ Maintainers**
+- **Christian Velasco Navarro** - *Lead Developer* - [@ByCulichi](https://github.com/ByCulichi)
+
+### **🙏 Acknowledgments**
+- Panera Bread team for the requirements
+- Python community for the libraries used
+- Contributors who help improve the project
 
 ---
 
-## 📞 **Contacto y Soporte**
+## 📄 **License**
 
-### **📧 Contacto**
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📞 **Contact and Support**
+
+### **📧 Contact**
 - **Email**: christian.velasco@panera.com
 - **GitHub**: [@ByCulichi](https://github.com/ByCulichi)
 - **LinkedIn**: [Christian Velasco](https://linkedin.com/in/christian-velasco)
 
-### **🆘 Obtener Ayuda**
-- 🐛 **Issues**: Reporta bugs en [GitHub Issues](https://github.com/ByCulichi/Culichi-Metrics/issues)
-- 💬 **Discusiones**: Únete a [GitHub Discussions](https://github.com/ByCulichi/Culichi-Metrics/discussions)
-- 📖 **Wiki**: Consulta la [Wiki del proyecto](https://github.com/ByCulichi/Culichi-Metrics/wiki)
+### **🆘 Getting Help**
+- 🐛 **Issues**: Report bugs at [GitHub Issues](https://github.com/ByCulichi/Culichi-Metrics/issues)
+- 💬 **Discussions**: Join [GitHub Discussions](https://github.com/ByCulichi/Culichi-Metrics/discussions)
+- 📖 **Wiki**: Check the [Project Wiki](https://github.com/ByCulichi/Culichi-Metrics/wiki)
 
 ---
 
 <div align="center">
 
-**📊 Hecho con ❤️ para el equipo de Panera Bread**
+**📊 Made with ❤️ for the Panera Bread team**
 
-*Automatizando reportes, maximizando el rendimiento*
+*Automating reports, maximizing performance*
 
-⭐ **¡No olvides dar una estrella si te ayudó este proyecto!** ⭐
+⭐ **Don't forget to star this project if it helped you!** ⭐
 
 </div>
 
 ---
 
-## ⚡ **Inicio Rápido (Quick Start)**
+## ⚡ **Quick Start**
 
-### **🚀 Opción 1: Configuración Automática (Recomendada para nuevos usuarios)**
+### **🚀 Option 1: Automatic Setup (Recommended for new users)**
 ```bash
-# 1. Clona el repositorio
+# 1. Clone the repository
 git clone https://github.com/ByCulichi/Culichi-Metrics.git
 cd Culichi-Metrics
 
-# 2. Ejecuta la configuración automática
+# 2. Run automatic setup
 python setup.py
 
-# 3. ¡Listo! El reporte se generará automáticamente
+# 3. Done! The report will be generated automatically
 ```
 
-### **⚡ Opción 2: Configuración Manual**
+### **⚡ Option 2: Manual Setup**
 ```bash
-# 1. Instalar dependencias
+# 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Generar reporte
+# 2. Generate report
 python to_excel.PY
 ```
 
-### **📊 Resultado**
-- ✅ Archivo Excel: `Reporte_Metricas_Christian_modified.xlsx`
-- 📋 2 hojas: Datos diarios + Análisis del equipo  
-- 🚦 Formato condicional automático
-- 📈 Gráficos de tendencias y rankings
+### **📊 Output**
+- ✅ Excel file: `Reporte_Metricas_Christian_modified.xlsx`
+- 📋 2 sheets: Daily data + Team analysis  
+- 🚦 Automatic conditional formatting
+- 📈 Trend and ranking charts
+
+**Console Output Example:**
+```
+============================================================
+📊 METRICS REPORTING SYSTEM - PANERA BREAD
+   Automated Excel Report Generator
+============================================================
+🚀 Starting metrics report generation...
+📊 Configuring cell formats...
+📅 Generating daily data sheet...
+  📊 Processing month: April
+  📈 Creating trend chart for April
+  📊 Processing month: May
+  📈 Creating trend chart for May
+👥 Generating team analysis sheet...
+  🚦 Applying traffic light conditional formatting...
+  📊 Creating OIR ranking chart...
+✅ Excel file generated successfully: Reporte_Metricas_Christian_modified.xlsx
+📂 Location: Reporte_Metricas_Christian_modified.xlsx
+🎉 Process completed!
+
+============================================================
+🎊 REPORT GENERATED CORRECTLY
+   The Excel file is ready to use
+============================================================
+```
