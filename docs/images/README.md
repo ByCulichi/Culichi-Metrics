@@ -1,6 +1,22 @@
-# Image Placeholders for Documentation
+# Documentation Images for Culichi-Metrics
 
-This directory contains placeholder images for the documentation. In a real implementation, these would be actual screenshots of the Excel reports.
+This directory contains images for the project documentation. Follow this guide to generate the required screenshots.
+
+## 📋 Quick Start for Creating Screenshots
+
+1. **Generate the Excel report:**
+   ```bash
+   cd /path/to/Culichi-Metrics
+   python to_excel.PY
+   ```
+
+2. **Open the generated file:** `Reporte_Metricas_Christian_modified.xlsx`
+
+3. **Take screenshots as described below**
+
+4. **Save them in this directory with the exact filenames specified**
+
+---
 
 ## Required Images
 

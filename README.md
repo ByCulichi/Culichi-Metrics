@@ -18,6 +18,14 @@
 
 This system automates the generation of professional Excel reports for analyzing performance metrics of the Panera Bread customer service team. The script processes daily and individual performance data, applying traffic light conditional formatting, generating trend charts, and creating comparative team analysis.
 
+### **📊 What Does It Do?**
+
+The system takes raw performance data and transforms it into a polished, professional Excel report with:
+- **Automated Data Processing**: Converts Python dictionaries into formatted Excel tables
+- **Visual Analytics**: Generates charts showing performance trends over time
+- **Performance Indicators**: Color-codes metrics based on target achievement
+- **Multi-Sheet Reports**: Organizes data into logical sections for easy navigation
+
 ### ✨ **Key Features**
 
 - 🔄 **Complete Automation**: Generates reports without manual intervention
@@ -35,6 +43,29 @@ The system generates a comprehensive Excel report with two main sheets:
 |:-------------:|:----------------:|
 | ![Daily Metrics Overview](docs/images/daily_metrics_preview.png) | ![Team Performance Overview](docs/images/team_performance_preview.png) |
 | Monthly KPI tracking with trend analysis | Individual employee metrics and rankings |
+
+### **🔄 System Workflow**
+
+```mermaid
+graph LR
+    A[Raw Data] --> B[Python Script]
+    B --> C[Data Processing]
+    C --> D[Apply Formatting]
+    D --> E[Generate Charts]
+    E --> F[Excel Report]
+    F --> G[Ready to Use]
+    
+    style A fill:#e1f5ff
+    style F fill:#c8e6c9
+    style G fill:#fff9c4
+```
+
+**Process Flow:**
+1. 📥 Input: Raw performance data (Python dictionaries)
+2. 🔄 Processing: Data validation and transformation with pandas
+3. 🎨 Formatting: Apply traffic light conditional formatting
+4. 📊 Visualization: Generate trend charts and rankings
+5. 💾 Output: Professional Excel file ready for stakeholders
 
 ---
 
@@ -133,6 +164,8 @@ The system generates a comprehensive Excel report with two main sheets:
 ![Daily Data Sheet Example](docs/images/daily_data_example.png)
 
 *The Daily Data sheet displays monthly performance metrics with color-coded cells (green for meeting targets, yellow for acceptable, red for critical) and includes automatic trend charts for visual analysis.*
+
+> 📝 **Note**: See [Visual Guide](docs/images/VISUAL_GUIDE.md) for an ASCII representation of the report structure.
 
 ### **👥 Sheet 2: "Team_August"**
 ```
